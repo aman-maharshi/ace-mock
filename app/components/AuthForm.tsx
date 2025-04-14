@@ -27,7 +27,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: type === "sign-up" ? "" : undefined,
       email: "",
       password: "",
     },
@@ -53,7 +53,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   }
 
   return (
-    <div className="card-border lg:min-w-[566px]">
+    <div className="card-border lg:min-w-[500px]">
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex flex-row gap-2 justify-center">
           <Image
