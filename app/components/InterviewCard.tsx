@@ -1,6 +1,9 @@
+import { Button } from '@/components/ui/button'
 import { getRandomInterviewCover } from '@/lib/utils'
 import dayjs from 'dayjs'
 import Image from 'next/image'
+import Link from 'next/link'
+import TechIcons from './TechIcons'
 
 const InterviewCard = ({ interviewId, userId, role, type, techstack,
   createdAt }: InterviewCardProps) => {
@@ -50,6 +53,23 @@ const InterviewCard = ({ interviewId, userId, role, type, techstack,
               <p>{feedback?.totalScore || '---'}/100</p>
             </div>
           </div>
+
+          <p className='line-clamp-2 mt-5'>
+            {feedback?.finalAssessment || "You haven't taken this interview yet. Take it now to impove your skills."}
+          </p>
+
+        </div>
+
+        <div className='flex flex-row justify-between'>
+          <TechIcons techStack={techstack} />
+
+          <Button className='btn-primary'>
+            <Link
+              href={feedback ? `/interview/${interviewId}/feedback` : `/interview/${interviewId}`}
+            >
+              {feedback ? 'Check Feedback' : 'View Interview'}
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
