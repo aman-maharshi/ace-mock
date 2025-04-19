@@ -1,4 +1,4 @@
-// import { interviewCovers, mappings } from "@/constants";
+import { interviewCovers, mappings } from "@/constants";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -41,7 +41,7 @@ const checkIconExists = async (url: string) => {
 //   return results;
 // };
 
-// export const getRandomInterviewCover = () => {
-//   const randomIndex = Math.floor(Math.random() * interviewCovers.length);
-//   return `/covers${interviewCovers[randomIndex]}`;
-// };
+export const getRandomInterviewCover = () => {
+  const randomIndex = Math.floor(Math.random() * interviewCovers.length);
+  return `/covers${interviewCovers[randomIndex]}`;
+};
