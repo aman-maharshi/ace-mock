@@ -15,7 +15,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "@/firebase/client"
-import { signUp } from "@/lib/actions/auth.action"
+import { setSessionCookie, signIn, signUp } from "@/lib/actions/auth.action"
 
 const authFormSchema = (type: FormType) => {
   return z.object({
@@ -63,7 +63,26 @@ const AuthForm = ({ type }: { type: FormType }) => {
         toast.success("Account created successfully, please sign in.")
         router.push("/sign-in")
       } else {
-        toast.success("Logged in successfully.")
+        const { email, password } = values
+        const userCredentials = await signInWithEmailAndPassword(auth, email, password)
+        const idToken = await userCredentials.user.getIdToken()
+
+        if (!idToken) {
+          toast.error("Sign in failed")
+          return
+        }
+
+        const result = await signIn({
+          email, idToken
+        })
+
+        if (!result?.success) {
+          toast.error(result?.message)
+          return
+        }
+
+        // Redirect to the home page
+        toast.success("Signed in successfully.")
         router.push("/")
       }
 
