@@ -10,12 +10,11 @@ import Link from "next/link"
 import { toast } from "sonner"
 import FormFieldInput from "./FormField"
 import { useRouter } from "next/navigation"
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/client"
 import { setSessionCookie, signIn, signUp } from "@/lib/actions/auth.action"
+import { useState } from "react"
+import ButtonLoader from "./ButtonLoader"
 
 const authFormSchema = (type: FormType) => {
   return z.object({
@@ -26,6 +25,7 @@ const authFormSchema = (type: FormType) => {
 }
 
 const AuthForm = ({ type }: { type: FormType }) => {
+  const [loading, setLoading] = useState(false)
   const formSchema = authFormSchema(type)
   const router = useRouter()
 
@@ -41,8 +41,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
   // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true)
     try {
-      console.log(type, values, "values")
+      // console.log(type, values, "values")
 
       if (type === "sign-up") {
         const { name, email, password } = values
@@ -76,11 +77,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
           email, idToken
         })
 
-        if (!result?.success) {
-          toast.error(result?.message)
-          return
-        }
-
         // Redirect to the home page
         toast.success("Signed in successfully.")
         router.push("/")
@@ -89,6 +85,8 @@ const AuthForm = ({ type }: { type: FormType }) => {
     } catch (error) {
       console.log("Error submitting form:", error)
       toast.error("An error occurred while submitting the form.")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -137,7 +135,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
             />
 
             <Button className="btn" type="submit">
-              {type === "sign-in" ? "Sign in" : "Create an Account"}
+              {loading ? <ButtonLoader /> : (
+                type === "sign-in" ? "Sign in" : "Create an Account"
+              )}
             </Button>
           </form>
 
