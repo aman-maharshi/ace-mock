@@ -85,3 +85,35 @@ export const setSessionCookie = async (idToken: string) => {
     sameSite: "lax"
   })
 }
+
+export const getCurrentUser = async () => {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get("session")?.value
+
+  if (!sessionCookie) {
+    return null
+  }
+
+  try {
+    const decodedClaims = await auth.verifySessionCookie(sessionCookie, true)
+    const userRecord = await db.collection('users').doc(decodedClaims.uid).get()
+
+    if (!userRecord.exists) {
+      return null
+    }
+
+    return {
+      ...userRecord.data(),
+      id: userRecord.id,
+    } as User
+
+  } catch (error) {
+    console.log("Error getting current user:", error)
+    return null
+  }
+}
+
+export const isAuthenticated = async () => {
+  const user = await getCurrentUser()
+  return !!user
+}
