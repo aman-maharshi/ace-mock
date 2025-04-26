@@ -1,9 +1,22 @@
-import { Span } from 'next/dist/trace';
-import Image from 'next/image';
 import React from 'react'
+import Image from 'next/image'
+import clsx from 'clsx'
+
+enum CallStatus {
+  INACTIVE = 'INACTIVE',
+  CONNECTING = 'CONNECTING',
+  ACTIVE = 'ACTIVE',
+  FINISHED = 'FINISHED'
+}
 
 const Agent = ({ userName, userId, type }: AgentProps) => {
+  const callStatus = CallStatus.FINISHED
   const isSpeaking = true
+  const messages = [
+    "What is your experience with React?",
+    "I have been working with React for over 3 years now. I have built several applications using React and have a good understanding of its core concepts.",
+  ]
+  const lastMessage = messages[messages.length - 1]
 
   return (
     <>
@@ -34,6 +47,34 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
             <h3>{userName}</h3>
           </div>
         </div>
+      </div>
+
+      {messages.length > 0 && (
+        <div className='transcript-border'>
+          <div className="transcript">
+            <p
+              className={clsx('transition-opacity duration-500 opacity-0', 'animate-fadeIn opacity-100')}
+              key={lastMessage}
+            >
+              {lastMessage}
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div className='w-full flex justify-center'>
+        {callStatus !== 'ACTIVE' ? (
+          <button className='relative btn-call'>
+            <span className={clsx('absolute animate-ping rounded-full opacity-75',
+              callStatus !== 'CONNECTING' && 'hidden'
+            )} />
+            <span>{callStatus === 'INACTIVE' || callStatus === 'FINISHED' ? "Call" : ". . ."}</span>
+          </button>
+        ) : (
+          <button className='btn-disconnect'>
+            End
+          </button>
+        )}
       </div>
     </>
   )
