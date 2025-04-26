@@ -68,6 +68,12 @@ export const signIn = async (params: SignInParams) => {
   }
 }
 
+export const signOut = async () => {
+  const cookieStore = await cookies()
+
+  cookieStore.delete("session")
+}
+
 export const setSessionCookie = async (idToken: string) => {
   const cookieStore = await cookies()
 
