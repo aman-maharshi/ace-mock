@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
@@ -10,7 +12,9 @@ enum CallStatus {
 }
 
 const Agent = ({ userName, userId, type }: AgentProps) => {
-  const callStatus = CallStatus.FINISHED
+  console.log(userName, userId, type, "agent")
+
+  const callStatus = CallStatus.ACTIVE // This would be dynamic in a real applicationcon
   const isSpeaking = true
   const messages = [
     "What is your experience with React?",
