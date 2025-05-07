@@ -1,8 +1,9 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
+import { useRouter } from 'next/navigation'
 
 enum CallStatus {
   INACTIVE = 'INACTIVE',
@@ -13,13 +14,16 @@ enum CallStatus {
 
 const Agent = ({ userName, userId, type }: AgentProps) => {
   console.log(userName, userId, type, "agent")
+  const router = useRouter()
 
-  const callStatus = CallStatus.ACTIVE // This would be dynamic in a real applicationcon
-  const isSpeaking = true
-  const messages = [
-    "What is your experience with React?",
-    "I have been working with React for over 3 years now. I have built several applications using React and have a good understanding of its core concepts.",
-  ]
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
+  const [messages, setMessages] = useState<SavedMessage[]>([])
+
+  // const messages = [
+  //   "What is your experience with React?",
+  //   "I have been working with React for over 3 years now. I have built several applications using React and have a good understanding of its core concepts.",
+  // ]
   const lastMessage = messages[messages.length - 1]
 
   return (
