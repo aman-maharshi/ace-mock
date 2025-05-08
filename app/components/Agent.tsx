@@ -1,9 +1,9 @@
 "use client"
-
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
+import { set } from 'zod'
 
 enum CallStatus {
   INACTIVE = 'INACTIVE',
@@ -19,6 +19,38 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
   const [messages, setMessages] = useState<SavedMessage[]>([])
+
+  useEffect(() => {
+    const onCallStart = () => {
+      setCallStatus(CallStatus.ACTIVE)
+    }
+
+    const onCallEnd = () => {
+      setCallStatus(CallStatus.FINISHED)
+    }
+
+    const onMessage = (message: Message) => {
+      if (message.type === "transcript" && message.transcriptType === "final") {
+        const newMessage = { role: message.role, content: message.transcript }
+        setMessages((prev) => [...prev, newMessage])
+      }
+    }
+
+    const onSpeechStart = () => {
+      console.log("speech start")
+      setIsSpeaking(true)
+    }
+
+    const onSpeechEnd = () => {
+      console.log("speech end")
+      setIsSpeaking(false)
+    }
+
+    const onError = (error: Error) => {
+      console.log("Error:", error)
+    }
+  }, [])
+
 
   // const messages = [
   //   "What is your experience with React?",
