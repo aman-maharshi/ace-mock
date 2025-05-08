@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
-import { set } from 'zod'
+import { vapi } from "@/lib/vapi.sdk"
 
 enum CallStatus {
   INACTIVE = 'INACTIVE',
@@ -48,6 +48,22 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
 
     const onError = (error: Error) => {
       console.log("Error:", error)
+    }
+
+    vapi.on("call-start", onCallStart)
+    vapi.on("call-end", onCallEnd)
+    vapi.on("message", onMessage)
+    vapi.on("speech-start", onSpeechStart)
+    vapi.on("speech-end", onSpeechEnd)
+    vapi.on("error", onError)
+
+    return () => {
+      vapi.off("call-start", onCallStart)
+      vapi.off("call-end", onCallEnd)
+      vapi.off("message", onMessage)
+      vapi.off("speech-start", onSpeechStart)
+      vapi.off("speech-end", onSpeechEnd)
+      vapi.off("error", onError)
     }
   }, [])
 
