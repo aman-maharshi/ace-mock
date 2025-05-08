@@ -20,6 +20,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
   const [messages, setMessages] = useState<SavedMessage[]>([])
 
+  // VAPI LISTENERS AND HANDLERS
   useEffect(() => {
     const onCallStart = () => {
       setCallStatus(CallStatus.ACTIVE)
@@ -67,6 +68,17 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
     }
   }, [])
 
+  useEffect(() => {
+    if (callStatus === CallStatus.FINISHED) {
+      router.push("/")
+    }
+
+  }, [messages, callStatus, type, userId])
+
+  const handleDisconnect = () => {
+    setCallStatus(CallStatus.FINISHED)
+    vapi.stop()
+  }
 
   // const messages = [
   //   "What is your experience with React?",
