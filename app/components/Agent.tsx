@@ -13,12 +13,14 @@ enum CallStatus {
 }
 
 const Agent = ({ userName, userId, type }: AgentProps) => {
-  console.log(userName, userId, type, "agent")
+  // console.log(userName, userId, type, "agent")
+
   const router = useRouter()
 
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
   const [messages, setMessages] = useState<SavedMessage[]>([])
+  const [lastMessage, setLastMessage] = useState<string>("")
 
   // VAPI LISTENERS AND HANDLERS
   useEffect(() => {
@@ -69,22 +71,35 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
   }, [])
 
   useEffect(() => {
+    if (messages.length > 0) {
+      setLastMessage(messages[messages.length - 1].content)
+    }
+
+    const handleGenerateFeedback = async (messages: SavedMessage[]) => { }
+
     if (callStatus === CallStatus.FINISHED) {
       router.push("/")
+    } else {
+      handleGenerateFeedback(messages)
     }
 
   }, [messages, callStatus, type, userId])
+
+  const handleCall = async () => {
+    setCallStatus(CallStatus.CONNECTING)
+
+    await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
+      variableValues: {
+        username: userName,
+        userid: userId,
+      },
+    })
+  }
 
   const handleDisconnect = () => {
     setCallStatus(CallStatus.FINISHED)
     vapi.stop()
   }
-
-  // const messages = [
-  //   "What is your experience with React?",
-  //   "I have been working with React for over 3 years now. I have built several applications using React and have a good understanding of its core concepts.",
-  // ]
-  const lastMessage = messages[messages.length - 1]
 
   return (
     <>
@@ -132,14 +147,18 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
 
       <div className='w-full flex justify-center'>
         {callStatus !== 'ACTIVE' ? (
-          <button className='relative btn-call'>
+          <button className='relative btn-call' onClick={handleCall}>
             <span className={clsx('absolute animate-ping rounded-full opacity-75',
               callStatus !== 'CONNECTING' && 'hidden'
             )} />
-            <span>{callStatus === 'INACTIVE' || callStatus === 'FINISHED' ? "Call" : ". . ."}</span>
+            <span className="relative">
+              {callStatus === "INACTIVE" || callStatus === "FINISHED"
+                ? "Call"
+                : ". . ."}
+            </span>
           </button>
         ) : (
-          <button className='btn-disconnect'>
+          <button className='btn-disconnect' onClick={handleDisconnect}>
             End
           </button>
         )}
