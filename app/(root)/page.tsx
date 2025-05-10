@@ -3,7 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { dummyInterviews } from '@/constants'
 import InterviewCard from '../components/InterviewCard'
-import { getCurrentUser, getInterviewsByUserId } from '@/lib/actions/auth.action'
+
+import { getCurrentUser } from '@/lib/actions/auth.action'
+import { getInterviewsByUserId, getOtherInterviews } from '@/lib/actions/interview.action'
 
 const Page = async () => {
 
@@ -11,8 +13,7 @@ const Page = async () => {
 
   const userInterviews = await getInterviewsByUserId(user?.id!)
   // console.log(userInterviews, "user interviews")
-
-  const hasPastInterviews = userInterviews?.length > 0
+  const otherInterviews = await getOtherInterviews({ userId: user?.id! })
 
   return (
     <>
@@ -40,7 +41,7 @@ const Page = async () => {
 
         <div className='interviews-section'>
 
-          {hasPastInterviews ? (
+          {userInterviews?.length > 0 ? (
             userInterviews?.map((interview) => (
               <InterviewCard key={interview.id} {...interview} />
             ))
@@ -55,11 +56,13 @@ const Page = async () => {
         <h2>Take and Interview</h2>
 
         <div className='interviews-section'>
-          {dummyInterviews.map((interview) => (
-            <InterviewCard key={interview.id} {...interview} />
-          ))}
-
-          {/* <p>There are no interviews available</p> */}
+          {otherInterviews?.length > 0 ? (
+            otherInterviews?.map((interview) => (
+              <InterviewCard key={interview.id} {...interview} />
+            ))
+          ) : (
+            <p>There are no new interviews available</p>
+          )}
         </div>
       </section>
     </>
