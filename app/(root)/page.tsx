@@ -11,9 +11,15 @@ const Page = async () => {
 
   const user = await getCurrentUser()
 
-  const userInterviews = await getInterviewsByUserId(user?.id!)
-  // console.log(userInterviews, "user interviews")
-  const otherInterviews = await getOtherInterviews({ userId: user?.id! })
+  // const userInterviews = await getInterviewsByUserId(user?.id!)
+  // const otherInterviews = await getOtherInterviews({ userId: user?.id! })
+
+  const [userInterviews, otherInterviews] = await Promise.all([
+    getInterviewsByUserId(user?.id!),
+    getOtherInterviews({ userId: user?.id! })
+  ])
+
+  // console.log('userInterviews', userInterviews)
 
   return (
     <>
@@ -43,7 +49,15 @@ const Page = async () => {
 
           {userInterviews?.length > 0 ? (
             userInterviews?.map((interview) => (
-              <InterviewCard key={interview.id} {...interview} />
+              <InterviewCard
+                key={interview.id}
+                userId={user?.id}
+                interviewId={interview.id}
+                role={interview.role}
+                type={interview.type}
+                techstack={interview.techstack}
+                createdAt={interview.createdAt}
+              />
             ))
           ) : (
             <p>You haven&apos;t taken any interviews yet</p>
@@ -58,7 +72,15 @@ const Page = async () => {
         <div className='interviews-section'>
           {otherInterviews?.length > 0 ? (
             otherInterviews?.map((interview) => (
-              <InterviewCard key={interview.id} {...interview} />
+              <InterviewCard
+                key={interview.id}
+                userId={user?.id}
+                interviewId={interview.id}
+                role={interview.role}
+                type={interview.type}
+                techstack={interview.techstack}
+                createdAt={interview.createdAt}
+              />
             ))
           ) : (
             <p>There are no new interviews available</p>
