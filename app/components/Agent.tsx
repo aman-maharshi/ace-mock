@@ -87,6 +87,7 @@ const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) =
 
       if (success && id) {
         router.push(`/interview/${interviewId}/feedback`)
+        // http://localhost:3000/interview/pLn3jrV3MIo1oYPdf2wA/feedback
       } else {
         console.log("Error saving feedback")
         router.push("/")
