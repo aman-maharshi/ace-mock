@@ -8,7 +8,7 @@ const SignIn = () => {
       <div className="absolute right-4 top-4">
         <ThemeToggle />
       </div>
-      <div className='text-center my-4 font-bold text-stone-700 text-lg'>Sign In</div>
+      {/* <div className='text-center my-4 font-bold text-stone-700 text-lg'>Sign In</div> */}
       <AuthForm type="sign-in" />
     </div>
   )
