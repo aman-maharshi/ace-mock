@@ -8,7 +8,7 @@ import { getCurrentUser } from '@/lib/actions/auth.action';
 const InterviewDetails = async ({ params }: RouteParams) => {
   const { id } = await params
 
-   const user = await getCurrentUser()
+  const user = await getCurrentUser()
   const interview = await getInterviewById(id)
 
   if (!interview) redirect("/")
@@ -42,7 +42,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
         interviewId={id}
         type="interview"
         questions={interview.questions}
-        // feedbackId={feedback?.id}
+      // feedbackId={feedback?.id}
       />
     </>
   )

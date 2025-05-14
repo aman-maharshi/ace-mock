@@ -4,13 +4,21 @@ import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import TechIcons from './TechIcons'
+import { getFeedbackByInterviewId } from '@/lib/actions/interview.action'
 
-const InterviewCard = ({ interviewId, userId, role, type, techstack,
+const InterviewCard = async ({ interviewId, userId, role, type, techstack,
   createdAt }: InterviewCardProps) => {
 
   // console.log('InterviewCard', { interviewId, userId, role, type, techstack, createdAt })
 
-  const feedback = null as Feedback | null
+  const feedback =
+    userId && interviewId
+      ? await getFeedbackByInterviewId({
+        interviewId,
+        userId,
+      })
+      : null
+
   const normalizedType = /mix/gi.test(type) ? 'Mixed' : type
   const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format('MMM D, YYYY')
 
