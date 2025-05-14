@@ -52,7 +52,6 @@ export async function createFeedback(params: CreateFeedbackParams) {
   const { interviewId, userId, transcript } = params
 
   try {
-
     const formattedTranscript = transcript
 
       // `interviewer: Hello, how are you?
