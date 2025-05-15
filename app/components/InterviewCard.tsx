@@ -6,7 +6,7 @@ import Link from 'next/link'
 import TechIcons from './TechIcons'
 import { getFeedbackByInterviewId } from '@/lib/actions/interview.action'
 
-const InterviewCard = async ({ interviewId, userId, role, type, techstack,
+const InterviewCard = async ({ interviewId, userId, role, type, techstack, level, noOfQuestions,
   createdAt }: InterviewCardProps) => {
 
   // console.log('InterviewCard', { interviewId, userId, role, type, techstack, createdAt })
@@ -30,43 +30,48 @@ const InterviewCard = async ({ interviewId, userId, role, type, techstack,
           <div className='absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg bg-light-100 dark:bg-light-600'>
             <p className='badge-text'>{normalizedType}</p>
           </div>
-
-          <Image
+          {/* <Image
             src={getRandomInterviewCover()}
             alt='Interview Cover'
             width={50}
             height={50}
             className='rounded-full object-fit size-[50px]'
-          />
+          /> */}
 
           <h3 className='mt-5 capitalize'>{role} Interview</h3>
 
           <div className='flex flex-row gap-5 mt-3'>
             <div className='flex flex-row gap-2'>
-              <Image
+              {/* <Image
                 src="/calendar.svg"
                 alt='Calendar'
                 width={22}
                 height={22}
-              />
+              /> */}
               <p>{formattedDate}</p>
             </div>
 
-            <div className='flex flex-row gap-2 items-center'>
-              <Image
-                src="/star.svg"
-                alt='Star'
-                width={22}
-                height={22}
-              />
-
-              <p>{feedback?.totalScore || '---'}/100</p>
-            </div>
+            {feedback?.totalScore && (
+              <div className='flex flex-row gap-2 items-center'>
+                {/* <Image
+                  src="/star.svg"
+                  alt='Star'
+                  width={22}
+                  height={22}
+                /> */}
+                <p>{feedback?.totalScore}/100</p>
+              </div>
+            )}
           </div>
 
           <p className='line-clamp-2 mt-5'>
             {feedback?.finalAssessment || "You haven't taken this interview yet. Take it now to impove your skills."}
           </p>
+
+          <div className='flex items-center justify-between mt-2 text-gray-500'>
+            <div>{level}</div>
+            <div>{noOfQuestions} questions</div>
+          </div>
 
         </div>
 

@@ -91,15 +91,19 @@ const AuthForm = ({ type }: { type: FormType }) => {
   }
 
   return (
-    <div className="card-border lg:min-w-[500px]">
-      <div className="flex flex-col gap-6 card py-14 px-10">
+    <div className="card-border lg:min-w-[500px] relative overflow-hidden">
+      <div className='absolute top-0 right-0 w-fit px-6 py-3 rounded-bl-2xl font-bold bg-light-100 dark:bg-light-600'>
+        <p className='badge-text'>{type === "sign-in" ? "Sign in" : "Sign up"}</p>
+      </div>
+
+      <div className="flex flex-col gap-4 card p-10">
         <div className="flex flex-row gap-2 justify-center">
-          <Image
+          {/* <Image
             src="/logo.svg"
             alt="Logo"
             height={32}
             width={38}
-          />
+          /> */}
           <h2 className="text-dark-100 dark:text-primary-100">AceMock</h2>
         </div>
         <h3 className="text-center">Practice job interviews with AI</h3>

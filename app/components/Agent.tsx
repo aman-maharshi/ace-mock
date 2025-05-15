@@ -150,7 +150,7 @@ const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) =
             />
             {isSpeaking && <span className='animate-speak'></span>}
           </div>
-          <h3>AI Interviewer</h3>
+          <h3 className='text-dark-100 dark:text-light-100'>AI Interviewer</h3>
         </div>
 
         <div className="card-border">
@@ -162,7 +162,7 @@ const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) =
               width={540}
               className='object-cover rounded-full size-[120px]'
             />
-            <h3>{userName}</h3>
+            <h3 className='text-dark-100 dark:text-light-100'>{userName}</h3>
           </div>
         </div>
       </div>

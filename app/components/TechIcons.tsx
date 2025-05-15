@@ -12,8 +12,8 @@ const TechIcons = async ({ techStack }: TechIconProps) => {
 
         return (
           <div key={index} className={clsx(
-            'relative group bg-gray-600 rounded-full p-2 flex-center',
-            index > 0 &&"-ml-3"
+            'relative group bg-gray-200 dark:bg-gray-700 rounded-full p-2 flex-center',
+            index > 0 &&"-ml-2"
           )}>
             <span className='tech-tooltip'>{tech}</span>
             <Image src={url} alt={tech} width={100} height={100} className='size-5' />

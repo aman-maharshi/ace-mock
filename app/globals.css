@@ -5,27 +5,29 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-success-100: #49de50;
-  --color-success-200: #42c748;
-  --color-destructive-100: #f75353;
-  --color-destructive-200: #c44141;
+  --color-success-100: #3ddc97;     /* Fresh mint green */
+  --color-success-200: #2fb07d;
 
-  --color-primary-100: #dddfff;
-  --color-primary-200: #cac5fe;
+  --color-destructive-100: #ff6b6b; /* Soft red coral */
+  --color-destructive-200: #d64545;
 
-  --color-light-100: #d6e0ff;
-  --color-light-400: #6870a6;
-  --color-light-600: #4f557d;
-  --color-light-800: #24273a;
+  --color-primary-100: #b3c7ff;     /* Calm sky blue */
+  --color-primary-200: #7ea3ff;
 
-  --color-dark-100: #020408;
-  --color-dark-200: #27282f;
-  --color-dark-300: #242633;
+  --color-light-100: #e8f0fe;       /* Gentle light blue */
+  --color-light-400: #8da4c7;
+  --color-light-600: #5c6e91;
+  --color-light-800: #2e354f;
+
+  --color-dark-100: #0d1117;        /* Deep night */
+  --color-dark-200: #1f2633;
+  --color-dark-300: #2b3444;
 
   --font-mona-sans: "Mona Sans", sans-serif;
 
   --bg-pattern: url("/pattern.png");
 }
+
 
 :root {
   --radius: 0.625rem;
@@ -241,7 +243,7 @@
     @apply border-gradient p-0.5 rounded-2xl w-full;
 
     .transcript {
-      @apply dark-gradient rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
+      @apply dark-gradient text-dark-100 dark:text-light-100 rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
 
       p {
         @apply text-lg text-center text-white;
@@ -262,7 +264,7 @@
   }
 
   .root-layout {
-    @apply flex mx-auto max-w-7xl flex-col gap-12 my-12 px-16 max-sm:px-4 max-sm:my-8;
+    @apply flex mx-auto max-w-7xl flex-col gap-8 pt-10 px-16 max-sm:px-4 max-sm:my-8;
   }
 
   .card-cta {
@@ -311,7 +313,7 @@
 }
 
 @utility blue-gradient {
-  @apply bg-gradient-to-l from-indigo-500 to-indigo-600 dark:from-[#FFFFFF] dark:to-[#CAC5FE];
+  @apply bg-gradient-to-l from-indigo-300 to-indigo-500 dark:from-[#FFFFFF] dark:to-[#CAC5FE];
 }
 
 @utility flex-center {
