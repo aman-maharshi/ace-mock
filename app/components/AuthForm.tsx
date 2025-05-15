@@ -100,7 +100,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             height={32}
             width={38}
           />
-          <h2 className="text-primary-100">AceMock</h2>
+          <h2 className="text-dark-100 dark:text-primary-100">AceMock</h2>
         </div>
         <h3 className="text-center">Practice job interviews with AI</h3>
 
@@ -141,7 +141,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             </Button>
           </form>
 
-          <p className="text-center">
+          <p className="text-center text-dark-100 dark:text-light-100">
             {type === "sign-in" ? "Don't have an account?" : "Already have an account?"}
             <Link
               href={type === "sign-in" ? "/sign-up" : "/sign-in"}

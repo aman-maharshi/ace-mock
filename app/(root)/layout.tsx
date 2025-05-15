@@ -20,7 +20,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
           className='flex items-center gap-2'
         >
           <Image src={"/logo.svg"} alt="Logo" width={38} height={32} />
-          <h2 className='text-primary-100'>AceMock</h2>
+          <h2 className='text-dark-100 dark:text-primary-100'>AceMock</h2>
         </Link>
 
         <LogoutButton />

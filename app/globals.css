@@ -142,7 +142,7 @@
     @apply bg-background text-foreground;
   }
   p {
-    @apply text-light-100;
+    @apply text-dark-100 dark:text-light-100;
   }
   h2 {
     @apply text-3xl font-semibold;
@@ -154,7 +154,7 @@
     @apply list-disc list-inside;
   }
   li {
-    @apply text-light-100;
+    @apply text-dark-100 dark:text-light-100;
   }
 }
 
@@ -197,11 +197,11 @@
     @apply w-full;
 
     .label {
-      @apply !text-light-100 !font-normal;
+      @apply text-dark-100 dark:text-light-100 !font-normal;
     }
 
     .input {
-      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-light-100;
+      @apply bg-white text-black dark:text-white dark:bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:text-dark-100 dark:placeholder:text-light-100;
     }
 
     .btn {
@@ -295,11 +295,11 @@
 }
 
 @utility dark-gradient {
-  @apply bg-gradient-to-b from-[#1A1C20] to-[#08090D];
+  @apply bg-gradient-to-b from-white to-gray-100 dark:from-[#1A1C20] dark:to-[#08090D];
 }
 
 @utility border-gradient {
-  @apply bg-gradient-to-b from-[#4B4D4F] to-[#4B4D4F33];
+  @apply bg-gradient-to-b from-gray-200 to-gray-100 dark:from-[#4B4D4F] dark:to-[#4B4D4F33];
 }
 
 @utility pattern {
@@ -307,11 +307,11 @@
 }
 
 @utility blue-gradient-dark {
-  @apply bg-gradient-to-b from-[#171532] to-[#08090D];
+  @apply bg-gradient-to-b from-indigo-50 to-white dark:from-[#171532] dark:to-[#08090D];
 }
 
 @utility blue-gradient {
-  @apply bg-gradient-to-l from-[#FFFFFF] to-[#CAC5FE];
+  @apply bg-gradient-to-l from-indigo-500 to-indigo-600 dark:from-[#FFFFFF] dark:to-[#CAC5FE];
 }
 
 @utility flex-center {

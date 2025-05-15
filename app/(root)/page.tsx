@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { dummyInterviews } from '@/constants'
 import InterviewCard from '../components/InterviewCard'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import { getInterviewsByUserId, getOtherInterviews } from '@/lib/actions/interview.action'
@@ -23,10 +24,13 @@ const Page = async () => {
 
   return (
     <>
+      <div className="absolute right-4 top-4">
+        <ThemeToggle />
+      </div>
       <section className='card-cta'>
         <div className='flex flex-col gap-6 max-w-lg'>
           <h2>Get Interview-Ready with AI-Powered Mock Interivews</h2>
-          <p className='text-lg'>
+          <p className='text-lg text-dark-100 dark:text-light-100'>
             Practice on real interview questions and get instant feedback.
           </p>
           <Button asChild className='btn-primary max-sm:w-full'>
@@ -47,7 +51,7 @@ const Page = async () => {
 
         <div className='interviews-section'>
 
-          {userInterviews?.length > 0 ? (
+          {userInterviews?.length && userInterviews?.length > 0 ? (
             userInterviews?.map((interview) => (
               <InterviewCard
                 key={interview.id}
@@ -70,7 +74,7 @@ const Page = async () => {
         <h2>Take and Interview</h2>
 
         <div className='interviews-section'>
-          {otherInterviews?.length > 0 ? (
+          {otherInterviews?.length && otherInterviews?.length > 0 ? (
             otherInterviews?.map((interview) => (
               <InterviewCard
                 key={interview.id}
