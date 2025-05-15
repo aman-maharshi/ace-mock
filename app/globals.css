@@ -243,10 +243,10 @@
     @apply border-gradient p-0.5 rounded-2xl w-full;
 
     .transcript {
-      @apply dark-gradient text-dark-100 dark:text-light-100 rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
+      @apply dark-gradient text-dark-100 dark:text-light-100 rounded-2xl min-h-12 px-5 py-3 flex items-center justify-center;
 
       p {
-        @apply text-lg text-center text-white;
+        @apply text-lg text-center text-black dark:text-white;
       }
     }
   }

@@ -94,7 +94,7 @@ const Page = async ({ params }: RouteParams) => {
         </ul>
       </div>
 
-      <div className="buttons">
+      <div className="buttons mb-8 max-w-2xl mx-auto">
         <Button className="btn-secondary flex-1">
           <Link href="/" className="flex w-full justify-center">
             <p className="text-sm font-semibold text-primary-200 text-center">

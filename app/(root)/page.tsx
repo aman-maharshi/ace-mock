@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { dummyInterviews } from '@/constants'
 import InterviewCard from '../components/InterviewCard'
 import { ThemeToggle } from '@/components/theme-toggle'
-
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import { getInterviewsByUserId, getOtherInterviews } from '@/lib/actions/interview.action'
 

@@ -189,7 +189,11 @@ const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) =
             <span className="relative">
               {callStatus === "INACTIVE" || callStatus === "FINISHED"
                 ? "Call"
-                : <ButtonLoader />
+                : (
+                  <div className='py-1'>
+                    <ButtonLoader />
+                  </div>
+                )
               }
             </span>
           </button>
