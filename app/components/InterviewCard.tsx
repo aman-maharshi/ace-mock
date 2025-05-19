@@ -6,6 +6,7 @@ import Link from 'next/link'
 import TechIcons from './TechIcons'
 import { getFeedbackByInterviewId } from '@/lib/actions/interview.action'
 import { Calendar, CircleCheckBig, Goal } from 'lucide-react'
+import clsx from 'clsx'
 
 const InterviewCard = async ({ interviewId, userId, role, type, techstack, level, noOfQuestions,
   createdAt }: InterviewCardProps) => {
@@ -38,7 +39,9 @@ const InterviewCard = async ({ interviewId, userId, role, type, techstack, level
             </div>
           ) : null}
 
-          <h3 className='mt-5 capitalize'>{role} Interview</h3>
+          <h3 className='mt-5 capitalize truncate'>
+            {role} {role.length <= 12 && "Interview"}
+          </h3>
 
           <div className='flex flex-row gap-5 mt-3'>
             <div className='flex flex-row gap-2 items-center'>
@@ -58,9 +61,16 @@ const InterviewCard = async ({ interviewId, userId, role, type, techstack, level
             {feedback?.finalAssessment || "You haven't taken this interview yet. Take it now to impove your skills."}
           </p>
 
-          <div className='flex items-center justify-between mt-2 text-gray-500 font-medium'>
-            <div>{(level || '').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</div>
-            <div>{noOfQuestions} questions</div>
+          <div className='flex items-center justify-between mt-2 text-gray-500 font-medium text-sm'>
+            <div className={clsx(
+              'py-1 px-3 rounded-full text-gray-700',
+              (level?.toLowerCase().includes('entry') || level?.toLowerCase().includes('junior')) && 'bg-green-100 text-green-700',
+              level?.toLowerCase().includes('mid') && 'bg-yellow-100 text-yellow-700',
+              level?.toLowerCase().includes('senior') && 'bg-red-100 text-red-700',
+            )}>
+              {(level || '').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+            </div>
+            <div>{noOfQuestions} Questions</div>
           </div>
 
         </div>
