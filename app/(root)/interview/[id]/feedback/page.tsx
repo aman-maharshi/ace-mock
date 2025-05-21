@@ -23,7 +23,7 @@ const Page = async ({ params }: RouteParams) => {
     userId: user?.id!,
   })
 
-  console.log(feedback, "feedback")
+  // console.log(feedback, "feedback")
 
   const resultPercentage = (feedback?.totalScore || 0)
 
@@ -67,9 +67,9 @@ const Page = async ({ params }: RouteParams) => {
           {feedback?.categoryScores?.map((category) => (
             <div key={category.name} className='flex items-center gap-4 flex-1'>
               <div className='w-[200px]'>{category.name}</div>
-              <div className='bg-gray-100 flex-1 px-2 rounded-sm font-bold relative overflow-hidden'>
+              <div className='bg-gray-100 dark:bg-gray-800 flex-1 px-2 rounded-sm font-bold relative overflow-hidden'>
                 <p className='relative z-10 text-center'>{category.score}%</p>
-                <span className='absolute inset-0 bg-green-200' style={{ width: `${category.score}%` }}></span>
+                <span className='absolute inset-0 bg-green-200 dark:bg-green-700' style={{ width: `${category.score}%` }}></span>
               </div>
             </div>
           ))}
