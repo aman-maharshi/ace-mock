@@ -1,14 +1,13 @@
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import Link from 'next/link'
-import { dummyInterviews } from '@/constants'
-import InterviewCard from '../components/InterviewCard'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { getCurrentUser } from '@/lib/actions/auth.action'
-import { getInterviewsByUserId, getOtherInterviews } from '@/lib/actions/interview.action'
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
+import Link from "next/link"
+import { dummyInterviews } from "@/constants"
+import InterviewCard from "../components/InterviewCard"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { getCurrentUser } from "@/lib/actions/auth.action"
+import { getInterviewsByUserId, getOtherInterviews } from "@/lib/actions/interview.action"
 
 const Page = async () => {
-
   const user = await getCurrentUser()
 
   // const userInterviews = await getInterviewsByUserId(user?.id!)
@@ -23,19 +22,18 @@ const Page = async () => {
 
   return (
     <>
-      <section className='flex items-center justify-end'>
-        <Button asChild className='btn-primary max-sm:w-full'>
+      <section className="flex items-center justify-end">
+        {/* <Button asChild className='btn-primary max-sm:w-full'>
           <Link href="/interview">Create an Interview</Link>
-        </Button>
+        </Button> */}
       </section>
 
-      <section className='flex flex-col gap-6'>
+      <section className="flex flex-col gap-6">
         <h2>Your Interviews</h2>
 
-        <div className='interviews-section'>
-
+        <div className="interviews-section">
           {userInterviews?.length && userInterviews?.length > 0 ? (
-            userInterviews?.map((interview) => (
+            userInterviews?.map(interview => (
               <InterviewCard
                 key={interview.id}
                 userId={user?.id}
@@ -54,12 +52,12 @@ const Page = async () => {
         </div>
       </section>
 
-      <section className='flex flex-col gap-6 mt-8'>
-        <h2>Take and Interview</h2>
+      <section className="flex flex-col gap-6 mt-8">
+        <h2>Other Interviews</h2>
 
-        <div className='interviews-section'>
+        <div className="interviews-section">
           {otherInterviews?.length && otherInterviews?.length > 0 ? (
-            otherInterviews?.map((interview) => (
+            otherInterviews?.map(interview => (
               <InterviewCard
                 key={interview.id}
                 userId={user?.id}
