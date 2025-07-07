@@ -24,6 +24,7 @@ const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) =
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
   const [messages, setMessages] = useState<SavedMessage[]>([])
   const [lastMessage, setLastMessage] = useState<string>("")
+  const [isGeneratingFeedback, setIsGeneratingFeedback] = useState(false)
 
   // VAPI LISTENERS AND HANDLERS
   useEffect(() => {
@@ -79,18 +80,27 @@ const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) =
     }
 
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-      const { success, feedbackId: id } = await createFeedback({
-        interviewId: interviewId!,
-        userId: userId!,
-        transcript: messages
-      })
+      setIsGeneratingFeedback(true)
 
-      if (success && id) {
-        router.push(`/interview/${interviewId}/feedback`)
-        // http://localhost:3000/interview/pLn3jrV3MIo1oYPdf2wA/feedback
-      } else {
-        console.log("Error saving feedback")
+      try {
+        const { success, feedbackId: id } = await createFeedback({
+          interviewId: interviewId!,
+          userId: userId!,
+          transcript: messages
+        })
+
+        if (success && id) {
+          router.push(`/interview/${interviewId}/feedback`)
+          // http://localhost:3000/interview/pLn3jrV3MIo1oYPdf2wA/feedback
+        } else {
+          console.log("Error saving feedback")
+          router.push("/")
+        }
+      } catch (error) {
+        console.error("Error generating feedback:", error)
         router.push("/")
+      } finally {
+        setIsGeneratingFeedback(false)
       }
     }
 
@@ -166,6 +176,22 @@ const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) =
               key={lastMessage}
             >
               {lastMessage}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {isGeneratingFeedback && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center gap-4">
+            <div className="flex space-x-1 justify-center items-center">
+              <div className="h-3 w-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div className="h-3 w-3 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div className="h-3 w-3 bg-blue-600 rounded-full animate-bounce"></div>
+            </div>
+            <p className="text-lg font-medium text-gray-900 dark:text-gray-100">Generating your feedback...</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+              Please wait while we analyze your interview and create detailed feedback.
             </p>
           </div>
         </div>
