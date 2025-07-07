@@ -155,3 +155,39 @@ export const sortInterviews = async ({
     return { success: false, sortedInterviews: interviews }
   }
 }
+
+export const filterInterviewsByType = async ({
+  interviews,
+  type
+}: {
+  interviews: Interview[]
+  type: "all" | "technical" | "behavioral" | "mixed"
+}) => {
+  try {
+    if (!interviews || interviews.length === 0) return { success: true, filteredInterviews: [] }
+
+    let filteredInterviews = [...interviews]
+
+    if (type !== "all") {
+      filteredInterviews = filteredInterviews.filter(interview => {
+        const interviewType = interview.type.toLowerCase()
+
+        switch (type) {
+          case "technical":
+            return interviewType.includes("technical") || interviewType.includes("tech")
+          case "behavioral":
+            return interviewType.includes("behavioral") || interviewType.includes("behavior")
+          case "mixed":
+            return interviewType.includes("mixed")
+          default:
+            return true
+        }
+      })
+    }
+
+    return { success: true, filteredInterviews }
+  } catch (error) {
+    console.error("Error filtering interviews by type:", error)
+    return { success: false, filteredInterviews: interviews }
+  }
+}

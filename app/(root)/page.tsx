@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import Link from "next/link"
-import { dummyInterviews } from "@/constants"
 import InterviewCard from "../components/InterviewCard"
 import InterviewSort from "../components/InterviewSort"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { getCurrentUser } from "@/lib/actions/auth.action"
-import { getInterviewsByUserId, getOtherInterviews, sortInterviews } from "@/lib/actions/interview.action"
+import {
+  getInterviewsByUserId,
+  getOtherInterviews,
+  sortInterviews,
+  filterInterviewsByType
+} from "@/lib/actions/interview.action"
 
-const Page = async ({ searchParams }: { searchParams: { sort?: string } }) => {
+const Page = async ({ searchParams }: { searchParams: { sort?: string; filter?: string } }) => {
   const user = await getCurrentUser()
 
   // const userInterviews = await getInterviewsByUserId(user?.id!)
@@ -19,11 +19,28 @@ const Page = async ({ searchParams }: { searchParams: { sort?: string } }) => {
     getOtherInterviews({ userId: user?.id! })
   ])
 
-  // Sort interviews based on search params
+  // Get filter and sort parameters
   const sortBy = (searchParams.sort as "newest" | "oldest" | "easy" | "medium" | "hard") || "newest"
+  const filterBy = (searchParams.filter as "all" | "technical" | "behavioral" | "mixed") || "all"
 
-  const sortedUserInterviews = await sortInterviews({ interviews: userInterviews || [], sortBy })
-  const sortedOtherInterviews = await sortInterviews({ interviews: otherInterviews || [], sortBy })
+  // First filter by type, then sort
+  const filteredUserInterviews = await filterInterviewsByType({
+    interviews: userInterviews || [],
+    type: filterBy
+  })
+  const filteredOtherInterviews = await filterInterviewsByType({
+    interviews: otherInterviews || [],
+    type: filterBy
+  })
+
+  const sortedUserInterviews = await sortInterviews({
+    interviews: filteredUserInterviews.filteredInterviews || [],
+    sortBy
+  })
+  const sortedOtherInterviews = await sortInterviews({
+    interviews: filteredOtherInterviews.filteredInterviews || [],
+    sortBy
+  })
 
   // console.log('userInterviews', userInterviews)
 
@@ -65,7 +82,7 @@ const Page = async ({ searchParams }: { searchParams: { sort?: string } }) => {
       <section className="flex flex-col gap-6 mt-8">
         <div className="flex items-center justify-between">
           <h2>Other Interviews</h2>
-          {otherInterviews && otherInterviews.length > 0 && <InterviewSort />}
+          {/* {otherInterviews && otherInterviews.length > 0 && <InterviewSort />} */}
         </div>
 
         <div className="interviews-section">
