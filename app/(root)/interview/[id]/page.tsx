@@ -44,7 +44,10 @@ const InterviewDetails = async ({ params }: RouteParams) => {
           <DisplayTechIcons techStack={interview.techstack} />
         </div>
 
-        <p className="bg-light-100 dark:bg-dark-200 px-4 py-2 rounded-lg h-fit">{interview.type}</p>
+        <div className="flex flex-row gap-2 items-center">
+          <p className="bg-light-100 dark:bg-dark-200 px-4 py-2 rounded-lg h-fit">{interview.type}</p>
+          <p className="bg-light-100 dark:bg-dark-200 px-4 py-2 rounded-lg h-fit capitalize">{interview.level}</p>
+        </div>
       </div>
 
       <Agent
