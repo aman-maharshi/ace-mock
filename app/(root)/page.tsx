@@ -8,20 +8,21 @@ import {
   filterInterviewsByType
 } from "@/lib/actions/interview.action"
 
-const Page = async ({ searchParams }: { searchParams: { sort?: string; filter?: string } }) => {
+const Page = async ({ searchParams }: { searchParams: Promise<{ sort?: string; filter?: string }> }) => {
   const user = await getCurrentUser()
 
   // const userInterviews = await getInterviewsByUserId(user?.id!)
   // const otherInterviews = await getOtherInterviews({ userId: user?.id! })
 
-  const [userInterviews, otherInterviews] = await Promise.all([
+  const [userInterviews, otherInterviews, params] = await Promise.all([
     getInterviewsByUserId(user?.id!),
-    getOtherInterviews({ userId: user?.id! })
+    getOtherInterviews({ userId: user?.id! }),
+    searchParams
   ])
 
   // Get filter and sort parameters
-  const sortBy = (searchParams.sort as "newest" | "oldest" | "easy" | "medium" | "hard") || "newest"
-  const filterBy = (searchParams.filter as "all" | "technical" | "behavioral" | "mixed") || "all"
+  const sortBy = (params.sort as "newest" | "oldest" | "easy" | "medium" | "hard") || "newest"
+  const filterBy = (params.filter as "all" | "technical" | "behavioral" | "mixed") || "all"
 
   // First filter by type, then sort
   const filteredUserInterviews = await filterInterviewsByType({
