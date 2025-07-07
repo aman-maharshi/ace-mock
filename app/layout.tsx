@@ -1,43 +1,34 @@
-import type { Metadata } from "next";
-import { Mona_Sans } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "sonner";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Inter } from "next/font/google";
+import type { Metadata } from "next"
+import { Mona_Sans } from "next/font/google"
+import "./globals.css"
+import { Toaster } from "sonner"
+import { ThemeProvider } from "@/components/theme-provider"
+import { Inter } from "next/font/google"
 
 const monaSans = Mona_Sans({
   variable: "--font-mona-sans",
-  subsets: ["latin"],
-});
-
-const inter = Inter({ subsets: ["latin"] });
+  subsets: ["latin"]
+})
 
 export const metadata: Metadata = {
   title: "AceMock",
-  description: "An AI-powered platform for preparing for coding interviews",
-};
+  description: "An AI-powered platform for preparing for coding interviews"
+}
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${monaSans.className} antialiased min-h-screen`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
+      <body className={`${monaSans.className} antialiased min-h-screen`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>
 
         <Toaster />
       </body>
     </html>
-  );
+  )
 }
