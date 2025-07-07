@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import TechIcons from "./TechIcons"
 import { getFeedbackByInterviewId } from "@/lib/actions/interview.action"
-import { Calendar, CircleCheckBig, Goal } from "lucide-react"
+import { Calendar, CircleCheckBig, Goal, Play, Eye, ArrowRight, Clock, Users } from "lucide-react"
 import clsx from "clsx"
 
 const InterviewCard = async ({
@@ -31,80 +31,133 @@ const InterviewCard = async ({
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type
   const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format("MMM D, YYYY")
 
+  const getLevelColor = (level: string | undefined) => {
+    const levelLower = level?.toLowerCase() || ""
+    if (levelLower.includes("entry") || levelLower.includes("junior")) {
+      return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
+    } else if (levelLower.includes("mid")) {
+      return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800"
+    } else if (levelLower.includes("senior")) {
+      return "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800"
+    }
+    return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+  }
+
   return (
-    <div className="card-border w-[360px] max-sm:w-full min-h-96">
-      <div className="card-interview">
-        <div>
-          <div className="absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg bg-light-100 dark:bg-light-600">
-            <p className="badge-text">{normalizedType}</p>
+    <div className="bg-white dark:bg-dark-200 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-200/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary-200/10 overflow-hidden group h-full flex flex-col">
+      {/* Header */}
+      <div className="p-6 pb-4">
+        {/* Status Badge */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-200/20 text-primary-700 dark:text-primary-300 text-xs font-semibold border border-primary-200 dark:border-primary-200/30">
+            {normalizedType}
           </div>
+
           {feedback ? (
-            <div className="flex flex-row gap-2 items-center text-sm text-green-600 absolute top-3 left-5">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm font-medium">
               <CircleCheckBig className="w-4 h-4" />
-              Attempted
-            </div>
-          ) : null}
-
-          <h3 className="mt-5 capitalize truncate">
-            {role} {role.length <= 12 && "Interview"}
-          </h3>
-
-          <div className="flex flex-row gap-5 mt-3">
-            <div className="flex flex-row gap-2 items-center">
-              <Calendar className="h-4 w-4 text-yellow-500" />
-              <p>{formattedDate}</p>
-            </div>
-
-            {feedback?.totalScore && (
-              <div className="flex flex-row gap-2 items-center">
-                <Goal className="h-4 w-4 text-yellow-500" />
-                <p>{feedback?.totalScore}/100</p>
-              </div>
-            )}
-          </div>
-
-          <p className="line-clamp-2 mt-5">
-            {feedback?.finalAssessment || "You haven't taken this interview yet. Take it now to impove your skills."}
-          </p>
-
-          <div className="flex items-center justify-between mt-2 text-gray-500 font-medium text-sm">
-            <div
-              className={clsx(
-                "py-1 px-3 rounded-full text-gray-700",
-                (level?.toLowerCase().includes("entry") || level?.toLowerCase().includes("junior")) &&
-                  "bg-green-100 text-green-700",
-                level?.toLowerCase().includes("mid") && "bg-yellow-100 text-yellow-700",
-                level?.toLowerCase().includes("senior") && "bg-red-100 text-red-700"
-              )}
-            >
-              {(level || "")
-                .split(" ")
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")}
-            </div>
-            <div>{noOfQuestions} Questions</div>
-          </div>
-        </div>
-
-        <TechIcons techStack={techstack} />
-
-        <div>
-          {feedback ? (
-            <div className="flex flex-row gap-2 justify-between">
-              <Button className="btn-primary">
-                <Link href={`/interview/${interviewId}/feedback`}>Check Feedback</Link>
-              </Button>
-              <Button variant="outline" className="btn-secondary">
-                <Link href={`/interview/${interviewId}`}>Retake Interview</Link>
-              </Button>
+              Completed
             </div>
           ) : (
-            <Button className="btn-primary">
-              <Link href={`/interview/${interviewId}`}>Take Interview</Link>
-            </Button>
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm font-medium">
+              <Clock className="w-4 h-4" />
+              Not Attempted
+            </div>
           )}
         </div>
+
+        {/* Title */}
+        <h3 className="text-xl font-bold text-dark-100 dark:text-light-100 mb-3 capitalize">
+          {role} {role.length <= 12 && "Interview"}
+        </h3>
+
+        {/* Meta Information */}
+        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            <span>{formattedDate}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4" />
+            <span>{noOfQuestions} Questions</span>
+          </div>
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 line-clamp-2">
+          {feedback?.finalAssessment ||
+            "Practice your skills with this comprehensive interview. Get detailed feedback and improve your performance."}
+        </p>
+
+        {/* Level Badge */}
+        <div className="mb-4">
+          <div
+            className={clsx(
+              "inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border",
+              getLevelColor(level)
+            )}
+          >
+            {(level || "")
+              .split(" ")
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ")}
+          </div>
+        </div>
+
+        {/* Score Display */}
+        {feedback?.totalScore && (
+          <div className="flex items-center gap-2 mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/10 rounded-xl border border-yellow-200 dark:border-yellow-800">
+            <Goal className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            <span className="text-sm font-semibold text-yellow-700 dark:text-yellow-300">
+              Score: {feedback.totalScore}/100
+            </span>
+          </div>
+        )}
       </div>
+
+      {/* Tech Stack */}
+      <div className="px-6 pb-4">
+        <TechIcons techStack={techstack} />
+      </div>
+
+      {/* Action Buttons */}
+      <div className="px-6 pb-6 mt-auto">
+        {feedback ? (
+          <div className="flex gap-3">
+            <Button className="flex-1 bg-primary-200 hover:bg-primary-200/80 text-dark-100 font-semibold rounded-xl h-11 group/btn">
+              <Link
+                href={`/interview/${interviewId}/feedback`}
+                className="flex items-center gap-2 w-full justify-center"
+              >
+                <Eye className="w-4 h-4" />
+                View Feedback
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              className="flex-1 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold rounded-xl h-11 group/btn"
+            >
+              <Link href={`/interview/${interviewId}`} className="flex items-center gap-2 w-full justify-center">
+                <Play className="w-4 h-4" />
+                Retake
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+          </div>
+        ) : (
+          <Button className="w-full bg-gradient-to-r from-primary-200 to-primary-100 hover:from-primary-200/90 hover:to-primary-100/90 text-dark-100 font-semibold rounded-xl h-11 group/btn shadow-lg hover:shadow-xl transition-all duration-200">
+            <Link href={`/interview/${interviewId}`} className="flex items-center gap-2 w-full justify-center">
+              <Play className="w-4 h-4" />
+              Start Interview
+              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
+        )}
+      </div>
+
+      {/* Hover Effect Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-primary-200/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
     </div>
   )
 }
