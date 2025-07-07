@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import TechIcons from "./TechIcons"
 import { getFeedbackByInterviewId } from "@/lib/actions/interview.action"
-import { Calendar, CircleCheckBig, Goal, Play, Eye, ArrowRight, Clock, Users } from "lucide-react"
+import { Calendar, CircleCheckBig, Goal, Play, Eye, ArrowRight, Clock, Users, History } from "lucide-react"
 import clsx from "clsx"
 import { getTypeStyles, getLevelColor, getScoreColor } from "@/lib/interview-utils"
 
@@ -30,7 +30,11 @@ const InterviewCard = async ({
       : null
 
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type
-  const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format("MMM D, YYYY")
+
+  // Show last attempted date if feedback exists, otherwise show creation date
+  const dateToShow = feedback?.createdAt || createdAt || Date.now()
+  const dateLabel = feedback ? "Attempted" : "Created"
+  const formattedDate = dayjs(dateToShow).format("MMM D, YYYY")
 
   const typeStyles = getTypeStyles(type)
   const TypeIcon = typeStyles.icon
@@ -75,10 +79,23 @@ const InterviewCard = async ({
         </h3>
 
         {/* Meta Information */}
-        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <div className="flex items-center justify-between gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            <span>{formattedDate}</span>
+            {feedback ? (
+              <>
+                <History className="w-4 h-4" />
+                <span>
+                  {dateLabel}: {formattedDate}
+                </span>
+              </>
+            ) : (
+              <>
+                <Calendar className="w-4 h-4" />
+                <span>
+                  {dateLabel}: {formattedDate}
+                </span>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4" />
