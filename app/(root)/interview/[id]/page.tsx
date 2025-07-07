@@ -1,9 +1,9 @@
-import { getInterviewById } from '@/lib/actions/interview.action'
-import { getRandomInterviewCover } from '@/lib/utils'
-import { redirect } from 'next/navigation'
-import Image from "next/image";
-import Agent from '@/app/components/Agent';
-import { getCurrentUser } from '@/lib/actions/auth.action';
+import { getInterviewById } from "@/lib/actions/interview.action"
+import { getRandomInterviewCover } from "@/lib/utils"
+import { redirect } from "next/navigation"
+import Image from "next/image"
+import Agent from "@/app/components/Agent"
+import { getCurrentUser } from "@/lib/actions/auth.action"
 import DisplayTechIcons from "@/app/components/DisplayTechIcons"
 
 const InterviewDetails = async ({ params }: RouteParams) => {
@@ -32,9 +32,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
           <DisplayTechIcons techStack={interview.techstack} />
         </div>
 
-        <p className="bg-light-100 dark:bg-dark-200 px-4 py-2 rounded-lg h-fit">
-          {interview.type}
-        </p>
+        <p className="bg-light-100 dark:bg-dark-200 px-4 py-2 rounded-lg h-fit">{interview.type}</p>
       </div>
 
       <Agent
@@ -43,7 +41,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
         interviewId={id}
         type="interview"
         questions={interview.questions}
-      // feedbackId={feedback?.id}
+        // feedbackId={feedback?.id}
       />
     </>
   )

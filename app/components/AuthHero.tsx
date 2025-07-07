@@ -1,5 +1,6 @@
 import { Sparkles, Users, Target, Award, Play } from "lucide-react"
 import React from "react"
+import Logo from "./Logo"
 
 const AuthHero = () => {
   return (
@@ -17,16 +18,8 @@ const AuthHero = () => {
       <div className="relative z-10 flex flex-col justify-center px-12 py-16">
         {/* Logo and Brand */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-200 to-primary-100 rounded-2xl flex items-center justify-center shadow-lg">
-              <Sparkles className="w-6 h-6 text-dark-100" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-dark-100 dark:text-primary-100">AceMock</h1>
-              <p className="text-sm text-dark-100/60 dark:text-light-100/60">AI Interview Practice</p>
-            </div>
-          </div>
-          <h2 className="text-4xl font-bold text-dark-100 dark:text-light-100 mb-4">Master Your Interviews</h2>
+          <Logo />
+          <h2 className="text-4xl font-bold text-dark-100 dark:text-light-100 mt-6 mb-4">Master Your Interviews</h2>
           <p className="text-lg text-dark-100/70 dark:text-light-100/70 leading-relaxed">
             Practice with AI-powered interviews and improve your skills with personalized feedback.
           </p>
