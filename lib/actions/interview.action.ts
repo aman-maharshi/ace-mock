@@ -1,23 +1,17 @@
-'use server'
+"use server"
 
-import { generateObject } from "ai";
-import { google } from "@ai-sdk/google";
-import { db } from "@/firebase/admin";
-import { feedbackSchema } from "@/constants";
+import { generateObject } from "ai"
+import { google } from "@ai-sdk/google"
+import { db } from "@/firebase/admin"
+import { feedbackSchema } from "@/constants"
 
 export async function getInterviewsByUserId(userId: string): Promise<Interview[] | null> {
-  const interviews = await db
-    .collection("interviews")
-    .where("userId", "==", userId)
-    .orderBy("createdAt", "desc")
-    .get()
+  const interviews = await db.collection("interviews").where("userId", "==", userId).orderBy("createdAt", "desc").get()
 
-  return interviews.docs.map((doc) => (
-    {
-      id: doc.id,
-      ...doc.data(),
-    }
-  )) as Interview[]
+  return interviews.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  })) as Interview[]
 }
 
 export async function getOtherInterviews(params: GetLatestInterviewsParams): Promise<Interview[] | null> {
@@ -31,19 +25,14 @@ export async function getOtherInterviews(params: GetLatestInterviewsParams): Pro
     .limit(limit)
     .get()
 
-  return interviews.docs.map((doc) => (
-    {
-      id: doc.id,
-      ...doc.data(),
-    }
-  )) as Interview[]
+  return interviews.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  })) as Interview[]
 }
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
-  const interview = await db
-    .collection("interviews")
-    .doc(id)
-    .get()
+  const interview = await db.collection("interviews").doc(id).get()
 
   return interview.data() as Interview | null
 }
@@ -56,15 +45,12 @@ export async function createFeedback(params: CreateFeedbackParams) {
 
       // `interviewer: Hello, how are you?
       // interviewee: I'm good, thanks!`
-      .map(
-        (sentence: { role: string; content: string }) =>
-          `- ${sentence.role}: ${sentence.content}\n`
-      )
+      .map((sentence: { role: string; content: string }) => `- ${sentence.role}: ${sentence.content}\n`)
       .join("")
 
     const { object } = await generateObject({
       model: google("gemini-2.0-flash-001", {
-        structuredOutputs: false,
+        structuredOutputs: false
       }),
       schema: feedbackSchema,
       prompt: `
@@ -80,7 +66,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
         - **Confidence & Clarity**: Confidence in responses, engagement, and clarity.
         `,
       system:
-        "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
+        "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories"
     })
 
     const feedback = await db.collection("feedback").add({
@@ -91,14 +77,13 @@ export async function createFeedback(params: CreateFeedbackParams) {
       strengths: object.strengths,
       areasForImprovement: object.areasForImprovement,
       finalAssessment: object.finalAssessment,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString()
     })
 
     return {
       success: true,
       feedbackId: feedback.id
     }
-
   } catch (error) {
     console.error("Error saving feedback:", error)
     return { success: false }
@@ -119,4 +104,53 @@ export async function getFeedbackByInterviewId(params: GetFeedbackByInterviewIdP
 
   const feedbackDoc = feedback.docs[0]
   return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback
+}
+
+export const sortInterviews = async ({
+  interviews,
+  sortBy
+}: {
+  interviews: Interview[]
+  sortBy: "newest" | "oldest" | "easy" | "medium" | "hard"
+}) => {
+  try {
+    if (!interviews || interviews.length === 0) return { success: true, sortedInterviews: [] }
+
+    let sortedInterviews = [...interviews]
+
+    switch (sortBy) {
+      case "newest":
+        sortedInterviews.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        break
+      case "oldest":
+        sortedInterviews.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+        break
+      case "easy":
+        sortedInterviews = sortedInterviews.filter(
+          interview =>
+            interview.level.toLowerCase().includes("easy") ||
+            interview.level.toLowerCase().includes("entry") ||
+            interview.level.toLowerCase().includes("junior")
+        )
+        break
+      case "medium":
+        sortedInterviews = sortedInterviews.filter(
+          interview => interview.level.toLowerCase().includes("medium") || interview.level.toLowerCase().includes("mid")
+        )
+        break
+      case "hard":
+        sortedInterviews = sortedInterviews.filter(
+          interview =>
+            interview.level.toLowerCase().includes("hard") || interview.level.toLowerCase().includes("senior")
+        )
+        break
+      default:
+        break
+    }
+
+    return { success: true, sortedInterviews }
+  } catch (error) {
+    console.error("Error sorting interviews:", error)
+    return { success: false, sortedInterviews: interviews }
+  }
 }
