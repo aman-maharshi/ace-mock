@@ -106,7 +106,7 @@ const InterviewCard = async ({
 
         {/* Score Display */}
         {feedback?.totalScore && (
-          <div className="flex items-center gap-2 mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/10 rounded-xl border border-yellow-200 dark:border-yellow-800">
+          <div className="flex justify-center items-center gap-2 mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/10 rounded-xl border border-yellow-200 dark:border-yellow-800">
             <Goal className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
             <span className="text-sm font-semibold text-yellow-700 dark:text-yellow-300">
               Score: {feedback.totalScore}/100
