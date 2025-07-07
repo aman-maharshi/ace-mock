@@ -3,11 +3,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { dummyInterviews } from "@/constants"
 import InterviewCard from "../components/InterviewCard"
+import InterviewSort from "../components/InterviewSort"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { getCurrentUser } from "@/lib/actions/auth.action"
-import { getInterviewsByUserId, getOtherInterviews } from "@/lib/actions/interview.action"
+import { getInterviewsByUserId, getOtherInterviews, sortInterviews } from "@/lib/actions/interview.action"
 
-const Page = async () => {
+const Page = async ({ searchParams }: { searchParams: { sort?: string } }) => {
   const user = await getCurrentUser()
 
   // const userInterviews = await getInterviewsByUserId(user?.id!)
@@ -17,6 +18,12 @@ const Page = async () => {
     getInterviewsByUserId(user?.id!),
     getOtherInterviews({ userId: user?.id! })
   ])
+
+  // Sort interviews based on search params
+  const sortBy = (searchParams.sort as "newest" | "oldest" | "easy" | "medium" | "hard") || "newest"
+
+  const sortedUserInterviews = await sortInterviews({ interviews: userInterviews || [], sortBy })
+  const sortedOtherInterviews = await sortInterviews({ interviews: otherInterviews || [], sortBy })
 
   // console.log('userInterviews', userInterviews)
 
@@ -29,11 +36,14 @@ const Page = async () => {
       </section>
 
       <section className="flex flex-col gap-6">
-        <h2>Your Interviews</h2>
+        <div className="flex items-center justify-between">
+          <h2>Your Interviews</h2>
+          {userInterviews && userInterviews.length > 0 && <InterviewSort />}
+        </div>
 
         <div className="interviews-section">
-          {userInterviews?.length && userInterviews?.length > 0 ? (
-            userInterviews?.map(interview => (
+          {sortedUserInterviews.sortedInterviews?.length && sortedUserInterviews.sortedInterviews?.length > 0 ? (
+            sortedUserInterviews.sortedInterviews?.map(interview => (
               <InterviewCard
                 key={interview.id}
                 userId={user?.id}
@@ -53,11 +63,14 @@ const Page = async () => {
       </section>
 
       <section className="flex flex-col gap-6 mt-8">
-        <h2>Other Interviews</h2>
+        <div className="flex items-center justify-between">
+          <h2>Other Interviews</h2>
+          {otherInterviews && otherInterviews.length > 0 && <InterviewSort />}
+        </div>
 
         <div className="interviews-section">
-          {otherInterviews?.length && otherInterviews?.length > 0 ? (
-            otherInterviews?.map(interview => (
+          {sortedOtherInterviews.sortedInterviews?.length && sortedOtherInterviews.sortedInterviews?.length > 0 ? (
+            sortedOtherInterviews.sortedInterviews?.map(interview => (
               <InterviewCard
                 key={interview.id}
                 userId={user?.id}
