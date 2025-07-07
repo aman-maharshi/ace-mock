@@ -56,12 +56,23 @@ const Page = async ({ params }: RouteParams) => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="flex items-center gap-2 mb-4">
+        <Button
+          variant="ghost"
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+          asChild
+        >
+          <Link href={`/`}>
+            <ArrowLeft className="size-6" />
+          </Link>
+        </Button>
+
+        <h1 className="text-3xl font-bold text-dark-100 dark:text-light-100">Interview Feedback</h1>
+      </div>
+
       {/* Header Section */}
-      <div className="bg-white dark:bg-dark-200 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 mb-8">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-dark-100 dark:text-light-100 mb-2">Interview Feedback</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 capitalize">{interview.role} Interview</p>
-        </div>
+      <div className="flex items-center justify-between mb-8">
+        <p className="text-lg text-gray-600 dark:text-gray-400 capitalize">{interview.role} Interview</p>
 
         <div className="flex items-center justify-center gap-6 text-sm text-gray-600 dark:text-gray-400">
           <div className="flex items-center gap-2">

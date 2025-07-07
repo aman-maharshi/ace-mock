@@ -1,15 +1,28 @@
-
 # AceMock
+
+AceMock is an AI-powered interview practice platform that simulates technical interviews with real-time voice interactions and feedback.
+
+## Technologies Used
 
 <div align="center">
   <div>
-    <img src="https://img.shields.io/badge/-Next.js-black?style=for-the-badge&logo=next.js& logoColor=white" alt="nextjs" />
+    <img src="https://img.shields.io/badge/-Next.js-black?style=for-the-badge&logo=next.js&logoColor=white" alt="nextjs" />
     <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
+    <img src="https://img.shields.io/badge/-Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="firebase" />
+    <img src="https://img.shields.io/badge/-Vapi-61f6b5?style=for-the-badge&logoColor=white&logo=mic" alt="vapi" />
     <img src="https://img.shields.io/badge/-shadcn/ui-black?style=for-the-badge&logoColor=white&color=000000" alt="shadcn-ui" />
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
-    <img src="https://img.shields.io/badge/-Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="firebase" />
   </div>
 </div>
+
+<br />
+
+- **Next.js**: React framework for production-grade applications
+- **TypeScript**: Strongly typed programming language built on JavaScript
+- **Firebase**: Backend-as-a-Service (BaaS) for authentication and database
+- **Vapi AI**: Voice API for real-time speech interactions
+- **shadcn/ui**: Re-usable UI components built with Radix UI and Tailwind
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development
 
 <br />
 

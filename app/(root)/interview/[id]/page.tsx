@@ -5,6 +5,9 @@ import Image from "next/image"
 import Agent from "@/app/components/Agent"
 import { getCurrentUser } from "@/lib/actions/auth.action"
 import DisplayTechIcons from "@/app/components/DisplayTechIcons"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
 
 const InterviewDetails = async ({ params }: RouteParams) => {
   const { id } = await params
@@ -18,7 +21,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
     <>
       <div className="flex flex-row gap-4 justify-between">
         <div className="flex flex-row gap-4 items-center max-sm:flex-col">
-          <div className="flex flex-row gap-4 items-center">
+          <div className="flex flex-row gap-2 items-center">
             {/* <Image
               src={getRandomInterviewCover()}
               alt="cover-image"
@@ -26,6 +29,15 @@ const InterviewDetails = async ({ params }: RouteParams) => {
               height={40}
               className="rounded-full object-cover size-[40px]"
             /> */}
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+              asChild
+            >
+              <Link href={`/`}>
+                <ArrowLeft className="size-6" />
+              </Link>
+            </Button>
             <h3 className="capitalize">{interview.role} Interview</h3>
           </div>
 
