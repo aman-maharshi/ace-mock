@@ -45,26 +45,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true)
     try {
-      // console.log(type, values, "values")
-
       if (type === "sign-up") {
-        const { name, email, password } = values
-        const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
-
-        const result = await signUp({
-          uid: userCredentials.user.uid,
-          name: name!,
-          email,
-          password
-        })
-
-        if (!result?.success) {
-          toast.error(result?.message)
-          return
-        }
-
-        toast.success("Account created successfully, please sign in.")
-        router.push("/sign-in")
+        toast.error("Maximum trial users reached.")
+        setLoading(false)
       } else {
         const { email, password } = values
         const userCredentials = await signInWithEmailAndPassword(auth, email, password)
@@ -99,12 +82,12 @@ const AuthForm = ({ type }: { type: FormType }) => {
         <div className="text-center space-y-4">
           <div className="space-y-2">
             <h3 className="text-xl font-semibold text-dark-100 dark:text-light-100">
-              {type === "sign-in" ? "Welcome back!" : "Join the community"}
+              {type === "sign-in" ? "Welcome back!" : "Sign-ups Temporarily Disabled"}
             </h3>
             <p className="text-sm text-dark-100/70 dark:text-light-100/70 leading-relaxed">
               {type === "sign-in"
                 ? "Sign in to continue your interview practice journey"
-                : "Start practicing with AI-powered interviews and improve your skills"}
+                : "We've reached our maximum trial users limit."}
             </p>
           </div>
         </div>
@@ -188,15 +171,21 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-gradient-to-r from-primary-200 via-primary-100 to-primary-200 hover:from-primary-200/90 hover:via-primary-100/90 hover:to-primary-200/90 text-dark-100 font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl group"
-              disabled={loading}
+              className={`w-full h-12 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl group ${
+                type === "sign-up"
+                  ? "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-primary-200 via-primary-100 to-primary-200 hover:from-primary-200/90 hover:via-primary-100/90 hover:to-primary-200/90 text-dark-100 font-semibold"
+              }`}
+              disabled={loading || type === "sign-up"}
             >
               {loading ? (
                 <ButtonLoader />
               ) : (
                 <div className="flex items-center justify-center gap-2">
-                  {type === "sign-in" ? "Sign In" : "Create Account"}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  {type === "sign-in" ? "Sign In" : "Sign-ups Disabled"}
+                  {type === "sign-in" && (
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  )}
                 </div>
               )}
             </Button>
