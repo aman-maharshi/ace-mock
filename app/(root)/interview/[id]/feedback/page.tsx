@@ -4,25 +4,9 @@ import { redirect } from "next/navigation"
 import dayjs from "dayjs"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import {
-  Calendar,
-  Medal,
-  Milestone,
-  ArrowLeft,
-  RefreshCw,
-  Trophy,
-  Target,
-  TrendingUp,
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  Users,
-  ChevronDown,
-  ChevronUp
-} from "lucide-react"
+import { Calendar, ArrowLeft, RefreshCw, TrendingUp, AlertCircle, CheckCircle, Users } from "lucide-react"
 import { DetailedAnalysis } from "./DetailedAnalysis"
-
-// http://localhost:3000/interview/pLn3jrV3MIo1oYPdf2wA/feedback
+import { QuestionsToggle } from "./QuestionsToggle"
 
 const Page = async ({ params }: RouteParams) => {
   const { id } = await params
@@ -191,6 +175,9 @@ const Page = async ({ params }: RouteParams) => {
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{feedback.finalAssessment}</p>
         </div>
       )}
+
+      {/* Interview Questions */}
+      <QuestionsToggle questions={interview.questions} />
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
